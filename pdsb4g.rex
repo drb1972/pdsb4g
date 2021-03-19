@@ -61,18 +61,21 @@ pds2git:
    call rxqueue "Delete", stem
 
 /* for each PDS                                                      */
+
    do i = 1 to dsname.0
       folder = translate(dsname.i,'\','.')     
       command = "exists = SysIsFileDirectory('"folder"')"
       interpret command
       if exists = 0 then do 
+/* New PDS or first time                                             */
          'zowe zos-files download am "'||dsname.i||'" --mcr 10'
          'zowe zos-files list am "'||dsname.i||'" -a --rfj > 'dsname.i||'.json'
       end
+
+/* Update                                                            */
+
+
    end /* do i = 1 to dsname.0 */
-
-
-
 
 
 
