@@ -70,17 +70,25 @@ pds2git:
 /* New PDS or first time                                             */
          'zowe zos-files download am "'||dsname.i||'" --mcr 10'
          'zowe zos-files list am "'||dsname.i||'" -a --rfj > 'dsname.i||'.json'
-         'git add .'
-         'git commit -a -m "fist-commit"'
-         'git push'
+         message = 'first-commit'
+         call commit message 
          iterate
       end
 
 /* Update                                                            */
 
 
+
+
    end /* do i = 1 to dsname.0 */
 
+   if commit = 'Y' then 'git push'
 
+return
 
+commit:
+   parse caseless arg message 
+   commit = 'Y'
+   'git add -A'
+   'git commit -a -m "'message'"'
 return
