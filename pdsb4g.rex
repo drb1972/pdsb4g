@@ -70,6 +70,8 @@ pds2git:
 /* New PDS or first time                                             */
          'zowe zos-files download am "'||dsname.i||'" --mcr 10'
          'zowe zos-files list am "'||dsname.i||'" -a --rfj > 'dsname.i||'.json'
+         'git commit -a -m "fist-commit"'
+         'git push'
       end
 
 /* Update                                                            */
