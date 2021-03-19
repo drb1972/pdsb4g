@@ -73,6 +73,7 @@ pds2git:
          'git add .'
          'git commit -a -m "fist-commit"'
          'git push'
+         iterate
       end
 
 /* Update                                                            */
