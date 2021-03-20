@@ -44,17 +44,17 @@ pds2git:
    do queued()
       pull sal
       select
-         when pos("STDOUT",sal)<>0 then iterate
-         when pos("DSNAME",sal)<>0 then parse var sal '"DSNAME":' dsname ','
-         when pos("DSORG",sal)<>0  then parse var sal '"DSORG":' dsorg ','
-         when pos("LRECL",sal)<>0  then parse var sal '"LRECL":' lrecl ','
+         when pos('"STDOUT":',sal)<>0 then iterate
+         when pos('"DSNAME":',sal)<>0 then parse var sal '"DSNAME":' dsname ','
+         when pos('"DSORG":',sal)<>0  then parse var sal '"DSORG":' dsorg ','
+         when pos('"LRECL":',sal)<>0  then parse var sal '"LRECL":' lrecl ','
          otherwise nop
       end /* select */
       if dsname <> '' & substr(dsorg,3,2) = 'PO' & substr(lrecl,3,2) = '80' then do 
          dsname = lower(dsname)
          i=i+1; dsname.i = changestr('"',dsname,' ')
          dsname.i = strip(dsname.i)
-         dsname = ''; dsorg  = ''
+         dsname = ''; dsorg  = ''; lrecl = ''
       end /* if dsname */
    end /* do queued() */
    dsname.0 = i
