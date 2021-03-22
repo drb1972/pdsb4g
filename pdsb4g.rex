@@ -83,31 +83,9 @@ pds2git:
 
 /* Update                                                            */
 
-      command = 'zowe zos-files list am "'||dsname.i||'" -a --rfj'  
-      stem = rxqueue("Create")
-      call rxqueue "Set",stem
-      interpret "'"command" | rxqueue' "stem  
-
       j=0; drop list.; drop table.;  member = ''; vers = ''; mod = ''
 
-      say 'Loading current member versions'
-      do queued()
-         pull sal
-         select
-            when pos('"STDOUT":',sal)<>0 then iterate
-            when pos('"MEMBER":',sal)<>0 then parse var sal '"MEMBER": "' member '",'
-            when pos('"VERS":',sal)<>0   then parse var sal '"VERS":' vers ','
-            when pos('"MOD":',sal)<>0    then parse var sal '"MOD":' mod ','
-            otherwise nop
-         end /* select */
-         if member <> '' & vers <> '' & mod <> '' then do
-            member = strip(member); vers = strip(vers); mod = strip(mod)
-            j=j+1; list.j =member
-            table.member.new = 'v'||vers ||'m'||mod
-            member = ''; vers = ''; mod = ''
-         end /* if */
-      end /* do queued() */
-      call rxqueue "Delete", stem
+/* Load old member version                                           */
 
       say 'Loading previous member versions'
       input_file  = dsname.i||'.json'
@@ -128,6 +106,32 @@ pds2git:
          end /* if dsname */
       end /* do queued() */
       call lineout input_file
+
+/* Load current member version                                       */
+
+      'zowe zos-files list am "'||dsname.i||'" -a --rfj > 'dsname.i||'.json'
+      stem = rxqueue("Create")
+      call rxqueue "Set",stem
+      interpret "'"command" | rxqueue' "stem 
+
+      say 'Loading current member versions'
+      do queued()
+         pull sal
+         select
+            when pos('"STDOUT":',sal)<>0 then iterate
+            when pos('"MEMBER":',sal)<>0 then parse var sal '"MEMBER": "' member '",'
+            when pos('"VERS":',sal)<>0   then parse var sal '"VERS":' vers ','
+            when pos('"MOD":',sal)<>0    then parse var sal '"MOD":' mod ','
+            otherwise nop
+         end /* select */
+         if member <> '' & vers <> '' & mod <> '' then do
+            member = strip(member); vers = strip(vers); mod = strip(mod)
+            j=j+1; list.j =member
+            table.member.new = 'v'||vers ||'m'||mod
+            member = ''; vers = ''; mod = ''
+         end /* if */
+      end /* do queued() */
+      call rxqueue "Delete", stem
 
       list.0 = j
 
