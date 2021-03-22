@@ -113,7 +113,6 @@ pds2git:
       input_file  = dsname.i||'.json'
       do while lines(input_file) \= 0
          sal = linein(input_file)
-         /* dxr */ say '==========>>>> 'sal
          select
             when pos('"stdout":',sal)<>0 then iterate
             when pos('"member":',sal)<>0 then parse var sal '"member": "' member '",'
@@ -132,10 +131,10 @@ pds2git:
 
       list.0 = j
 
-      /* dxr */ do j = 1 to list.0
-                  member = list.j
-                  say '---> member 'member 'table.member.new 'table.member.new 'table.member.old 'table.member.old
-               end
+      -- /* dxr */ do j = 1 to list.0
+      --             member = list.j
+      --             say '---> member 'member 'table.member.new 'table.member.new 'table.member.old 'table.member.old
+      --          end
 
 
 /* sort stem buble method */
