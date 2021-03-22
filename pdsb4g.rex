@@ -124,7 +124,7 @@ pds2git:
          if member <> '' & vers <> '' & mod <> '' then do
             member = strip(member); vers = strip(vers); mod = strip(mod)
             j=j+1; list.j =member
-            table.member.mew = 'v'||vers ||'m'||mod
+            table.member.new = 'v'||vers ||'m'||mod
             member = ''; vers = ''; mod = ''
          end /* if dsname */
       end /* do queued() */
