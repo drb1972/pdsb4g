@@ -1,3 +1,4 @@
 /* rexx04 */
 say 'rexx04'
+say 'test0'
 exit
