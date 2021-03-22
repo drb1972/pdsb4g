@@ -227,6 +227,9 @@ git2pds:
    dataset.0 = i
    do i = 1 to dataset.0
       say dataset.i 
+      j = i-1
+      if dataset.i = dataset.j then iterate
+      'zowe zos-files list am "'||dataset.i||'" -a --rfj > 'dataset.i||'.json'
    end
 return
 
