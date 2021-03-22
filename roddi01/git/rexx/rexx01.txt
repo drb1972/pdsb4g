@@ -5,7 +5,7 @@ dsname    = 'TMPPR.CHM.AUDIT.JCLS'
 /*====================================================================*/
 upper cam
 call init
-/* cambio 1 */
+/* cambio 00 */
 /*
 apl.1 = SPT
 apl.0 = 1
