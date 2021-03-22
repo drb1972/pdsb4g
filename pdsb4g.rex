@@ -179,6 +179,20 @@ pds2git:
 
 return
 
+git2pds:
+
+   command = 'git pull'
+   stem = rxqueue("Create")
+   call rxqueue "Set",stem
+   interpret "'"command" | rxqueue' "stem  
+   do queued()
+      pull sal
+      say '--> 'sal
+   end
+   call rxqueue "Delete", stem
+
+return
+
 commit:
    parse caseless arg message 
    commit = 'Y'
