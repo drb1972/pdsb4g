@@ -108,7 +108,7 @@ pds2git:
 
 /* Load current member version                                       */
       say 'Loading current member versions'
-      command = 'zowe zos-files list am "'||dsname.i||'" -a --rfj > 'dsname.i||'.json'
+      'zowe zos-files list am "'||dsname.i||'" -a --rfj > 'dsname.i||'.json'
       input_file  = dsname.i||'.json'
       do while lines(input_file) \= 0
          sal = linein(input_file)
