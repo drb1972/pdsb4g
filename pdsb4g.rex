@@ -8,8 +8,7 @@ call read_config
 
 if pds2git = Y then call pds2git
 
-
-
+if git2pds = Y then call git2pds
 
 say '['||time()||'] Using rexxfile 'directory()
 
@@ -41,7 +40,7 @@ pds2git:
    call rxqueue "Set",stem
    interpret "'"command" | rxqueue' "stem  
 
-   drop dsname.; i = 0; dsname = ''; dsorg = ''; sal = ''
+   drop dsname.; drop folder.; i = 0; dsname = ''; dsorg = ''; sal = ''
    
    do queued()
       pull sal
@@ -65,9 +64,9 @@ pds2git:
 /* for each PDS                                                      */
 
    do i = 1 to dsname.0
-      folder = translate(dsname.i,'\','.')     
-      say dsname.i '--> ' folder
-      command = "exists = SysIsFileDirectory('"folder"')"
+      folder.i = translate(dsname.i,'\','.')     
+      say dsname.i '--> ' folder.i
+      command = "exists = SysIsFileDirectory('"folder.i"')"
       interpret command
       if exists = 0 then do 
 /* New PDS or first time                                             */   
@@ -159,8 +158,8 @@ pds2git:
          member = list.k
          select
             when table.member.new = 'TABLE.'||member||'.NEW' then do 
-               say 'Deleting 'folder||'\'||member 
-               'del 'folder||'\'||member||'.*'
+               say 'Deleting 'folder.i||'\'||member 
+               'del 'folder.i||'\'||member||'.*'
                message = 'Delete'
                call commit message
             end
@@ -177,6 +176,60 @@ pds2git:
    end /* do k = 1 to dsname.0 */
 
    if commit = 'Y' then 'git push'
+
+return
+
+git2pds:
+
+
+   dir1 = translate(hlq,'\','.')     
+   dir1 = translate(dir1,'','*')
+   dir1 = translate(dir1,'','%')     
+   dir2 = translate(dir1,'/','\')
+   dir1 = strip(dir1)  
+   dir2 = strip(dir2)  
+
+/* dxr */ say '--> dir 'dir1 dir2
+
+   command = 'git pull'
+   stem = rxqueue("Create")
+   call rxqueue "Set",stem
+   interpret "'"command" | rxqueue' "stem  
+   do queued()
+      filename = '' 
+      parse caseless pull sal
+
+/* dxr */ say '--> sal 'sal 
+
+      select
+         when pos('Already up to date.',sal)<>0 then say 'Up to Date'
+         when pos('files changed',sal)<>0 | pos('file changed',sal)<>0 then leave
+         when pos(dir1,sal)<>0 | pos(dir2,sal)<>0 then do
+            parse var sal filename ' |' . 
+            /* dxr */ say '--> filename 'filename
+            len = length(filename)
+            dataset_member = substr(filename,1,len-4) 
+            dataset_member = translate(dataset_member,'.','/')     
+            dataset_member = translate(dataset_member,'.','\')     
+            lp = lastpos('.',dataset_member) 
+            dataset_member = translate(dataset_member,'(','.',,lp) || ')'
+            /* dxr */ say '--> dataset_member'dataset_member
+            if SysFileExists(filename) = 0 then Do
+               say 'File 'filename 'doesn''t exist'
+               /* dxr */ say '--> zowe zos-files delete data-set "'||dataset_member||'" -f'
+
+               'zowe zos-files delete data-set "'||dataset_member||'" -f'
+            end
+            else do 
+               /* dxr */ say '--> zowe zos-files upload file-to-data-set "'||filename||'" "'||dataset_member||'"'
+               'zowe zos-files upload file-to-data-set "'||filename||'" "'||dataset_member||'"'
+            end /* if SysFileExists */   
+         end
+         otherwise nop
+      end
+   end /* do queued() */
+   
+   call rxqueue "Delete", stem
 
 return
 
