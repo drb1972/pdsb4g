@@ -8,8 +8,7 @@ call read_config
 
 if pds2git = Y then call pds2git
 
-
-
+if git2pds = Y then call git2pds
 
 say '['||time()||'] Using rexxfile 'directory()
 
@@ -41,7 +40,7 @@ pds2git:
    call rxqueue "Set",stem
    interpret "'"command" | rxqueue' "stem  
 
-   drop dsname.; i = 0; dsname = ''; dsorg = ''; sal = ''
+   drop dsname.; drop folder.; i = 0; dsname = ''; dsorg = ''; sal = ''
    
    do queued()
       pull sal
@@ -65,9 +64,9 @@ pds2git:
 /* for each PDS                                                      */
 
    do i = 1 to dsname.0
-      folder = translate(dsname.i,'\','.')     
-      say dsname.i '--> ' folder
-      command = "exists = SysIsFileDirectory('"folder"')"
+      folder.i = translate(dsname.i,'\','.')     
+      say dsname.i '--> ' folder.i
+      command = "exists = SysIsFileDirectory('"folder.i"')"
       interpret command
       if exists = 0 then do 
 /* New PDS or first time                                             */   
@@ -159,8 +158,8 @@ pds2git:
          member = list.k
          select
             when table.member.new = 'TABLE.'||member||'.NEW' then do 
-               say 'Deleting 'folder||'\'||member 
-               'del 'folder||'\'||member||'.*'
+               say 'Deleting 'folder.i||'\'||member 
+               'del 'folder.i||'\'||member||'.*'
                message = 'Delete'
                call commit message
             end
