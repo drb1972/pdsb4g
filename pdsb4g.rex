@@ -66,8 +66,7 @@ pds2git:
 
    do i = 1 to dsname.0
       folder = translate(dsname.i,'\','.')     
-      say 'PDS -----> 'dsname.i
-      say 'Folder --> ' folder
+      say dsname.i '--> ' folder
       command = "exists = SysIsFileDirectory('"folder"')"
       interpret command
       if exists = 0 then do 
@@ -108,7 +107,7 @@ pds2git:
       call lineout input_file
 
 /* Load current member version                                       */
-
+      say 'Loading current member versions'
       command = 'zowe zos-files list am "'||dsname.i||'" -a --rfj > 'dsname.i||'.json'
       input_file  = dsname.i||'.json'
       do while lines(input_file) \= 0
