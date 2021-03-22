@@ -10,6 +10,9 @@ call init
 apl.1 = SPT
 apl.0 = 1
 */
+
+say 'test'
+
 call aplicaciones_CHM /* Carga todos lod CAM de tres letras */
 
 do apl = 1 to apl.0
