@@ -1,2 +1,0 @@
-/* rexx */
-say 'New member'
