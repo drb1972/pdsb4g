@@ -1,4 +1,4 @@
 /* rexx04 */
 say 'rexx04'
-say 'test2'
+say 'test3'
 exit
