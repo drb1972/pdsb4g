@@ -210,7 +210,7 @@ git2pds:
             lp = lastpos('.',dataset_member) 
             dataset_member = translate(dataset_member,'(','.',,lp) || ')'
             lp = pos('(',dataset_member)  
-            i=i+1; dataset.i = substr(dataset_member,1,lp) 
+            i=i+1; dataset.i = substr(dataset_member,1,lp-1) 
             if SysFileExists(filename) = 0 then Do
                say 'File 'filename 'doesn''t exist'
                'zowe zos-files delete data-set "'||dataset_member||'" -f'
