@@ -113,6 +113,7 @@ pds2git:
       input_file  = dsname.i||'.json'
       do while lines(input_file) \= 0
          sal = linein(input_file)
+         /* dxr */ say '==========>>>> 'sal
          select
             when pos('"stdout":',sal)<>0 then iterate
             when pos('"member":',sal)<>0 then parse var sal '"member": "' member '",'
