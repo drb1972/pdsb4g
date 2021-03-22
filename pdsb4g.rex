@@ -153,13 +153,15 @@ pds2git:
                say 'Deleting 'folder
                'del 'folder||'\'||member||'.*'
                message = 'Delete'
-               call commit
+               call commit message
+               commit = N 
             end
             when table.member.new <> table.member.old then do 
                say dsname.i||'('||member||') updated from 'table.member.old ' to 'table.member.new
                'zowe zos-files download ds "'||dsname.i||'('||member||')"'
                message = table.member.new 
-               call commit
+               call commit message
+               commit = N 
             end
             otherwise nop
          end
