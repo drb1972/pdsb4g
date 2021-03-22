@@ -64,11 +64,15 @@ pds2git:
 
    do i = 1 to dsname.0
       folder = translate(dsname.i,'\','.')     
+      say 'PDS -----> 'dsname.i
+      say 'Folder --> ' folder
       command = "exists = SysIsFileDirectory('"folder"')"
       interpret command
       if exists = 0 then do 
-/* New PDS or first time                                             */
+/* New PDS or first time                                             */   
+         say 'Folder doesn''t exist'
          'zowe zos-files download am "'||dsname.i||'" --mcr 10'
+         say 'Creating 'dsname.i'.json file'
          'zowe zos-files list am "'||dsname.i||'" -a --rfj > 'dsname.i||'.json'
          message = 'first-commit'
          call commit message 
@@ -142,14 +146,6 @@ pds2git:
             otherwise nop
          end
       end
-
-
-
-
-
-
-
-
 
    end /* do i = 1 to dsname.0 */
 
