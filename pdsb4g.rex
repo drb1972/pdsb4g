@@ -109,7 +109,7 @@ pds2git:
 
 /* Load current member version                                       */
 
-      'zowe zos-files list am "'||dsname.i||'" -a --rfj > 'dsname.i||'.json'
+      command = 'zowe zos-files list am "'||dsname.i||'" -a --rfj > 'dsname.i||'.json'
       stem = rxqueue("Create")
       call rxqueue "Set",stem
       interpret "'"command" | rxqueue' "stem 
