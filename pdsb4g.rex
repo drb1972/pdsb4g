@@ -130,10 +130,10 @@ pds2git:
 
       list.0 = j
 
-      -- /* dxr */ do j = 1 to list.0
-      --             member = list.j
-      --             say '---> member 'member 'table.member.new 'table.member.new 'table.member.old 'table.member.old
-      --          end
+      /* dxr */ do j = 1 to list.0
+                  member = list.j
+                  say '---> member 'member 'table.member.new 'table.member.new 'table.member.old 'table.member.old
+               end
 
 
 /* sort stem buble method */
