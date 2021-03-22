@@ -182,12 +182,14 @@ return
 git2pds:
 
 
-   dir = translate(hlq,'\','.')     
-   dir = translate(hlq,'*','')
-   dir = translate(hlq,'%','')     
-   dir = strip(dir)  
+   dir1 = translate(hlq,'\','.')     
+   dir1 = translate(dir1,'','*')
+   dir1 = translate(dir1,'','%')     
+   dir2 = translate(dir1,'/','\')
+   dir1 = strip(dir1)  
+   dir2 = strip(dir2)  
 
-/* dxr */ say '--> 'dir
+/* dxr */ say '--> dir 'dir
 
    command = 'git pull'
    stem = rxqueue("Create")
