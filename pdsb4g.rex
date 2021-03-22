@@ -189,7 +189,7 @@ git2pds:
    dir1 = strip(dir1)  
    dir2 = strip(dir2)  
 
-/* dxr */ say '--> dir 'dir
+/* dxr */ say '--> dir 'dir1 dir2
 
    command = 'git pull'
    stem = rxqueue("Create")
@@ -204,7 +204,7 @@ git2pds:
       select
          when pos('Already up to date.',sal)<>0 then say 'Up to Date'
          when pos('files changed',sal)<>0 | pos('file changed',sal)<>0 then leave
-         when pos(dir,sal)<>0 then do
+         when pos(dir1,sal)<>0 | pos(dir2,sal)<>0 then do
             parse var sal filename ' |' . 
             /* dxr */ say '--> filename 'filename
             len = length(filename)
