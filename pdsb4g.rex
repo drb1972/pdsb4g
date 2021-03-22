@@ -181,7 +181,6 @@ return
 
 git2pds:
 
-
    dir1 = translate(hlq,'\','.')     
    dir1 = translate(dir1,'','*')
    dir1 = translate(dir1,'','%')     
@@ -189,7 +188,7 @@ git2pds:
    dir1 = lower(strip(dir1))
    dir2 = lower(strip(dir2))
 
-/* dxr */ say '--> dir 'dir1 dir2
+   drop dataset.; i=0
 
    command = 'git pull'
    stem = rxqueue("Create")
@@ -198,30 +197,25 @@ git2pds:
    do queued()
       filename = '' 
       parse caseless pull sal
-
-/* dxr */ say '--> sal 'sal 
-
       select
          when pos('Already up to date.',sal)<>0 then say 'Up to Date'
          when pos('files changed',sal)<>0 | pos('file changed',sal)<>0 then leave
          when pos(dir1,sal)<>0 | pos(dir2,sal)<>0 then do
             parse var sal filename ' |' . 
-            /* dxr */ say '--> filename 'filename
+            filename = strip(filename)
             len = length(filename)
             dataset_member = substr(filename,1,len-4) 
             dataset_member = translate(dataset_member,'.','/')     
             dataset_member = translate(dataset_member,'.','\')     
             lp = lastpos('.',dataset_member) 
             dataset_member = translate(dataset_member,'(','.',,lp) || ')'
-            /* dxr */ say '--> dataset_member'dataset_member
-            if SysFileExists("'"filename"'") = 0 then Do
+            lp = pos('(',dataset_member)  
+            i=i+1; dataset.i = substr(dataset_member,1,lp) 
+            if SysFileExists(filename) = 0 then Do
                say 'File 'filename 'doesn''t exist'
-               /* dxr */ say '--> zowe zos-files delete data-set "'||dataset_member||'" -f'
-
                'zowe zos-files delete data-set "'||dataset_member||'" -f'
             end
             else do 
-               /* dxr */ say '--> zowe zos-files upload file-to-data-set "'||filename||'" "'||dataset_member||'"'
                'zowe zos-files upload file-to-data-set "'||filename||'" "'||dataset_member||'"'
             end /* if SysFileExists */   
          end
@@ -230,7 +224,10 @@ git2pds:
    end /* do queued() */
    
    call rxqueue "Delete", stem
-
+   dataset.0 = i
+   do i = 1 to dataset.0
+      say dataset.i 
+   end
 return
 
 commit:
