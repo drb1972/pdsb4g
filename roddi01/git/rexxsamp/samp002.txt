@@ -1,0 +1,3 @@
+/* samp02 */
+say hi
+exit

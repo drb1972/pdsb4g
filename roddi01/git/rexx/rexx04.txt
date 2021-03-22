@@ -1,4 +1,0 @@
-/* rexx04 */
-say 'rexx04'
-say 'test3'
-exit
