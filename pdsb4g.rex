@@ -109,6 +109,8 @@ pds2git:
 /* Load current member version                                       */
       say 'Loading current member versions'
       'zowe zos-files list am "'||dsname.i||'" -a --rfj > 'dsname.i||'.json'
+      message = 'members-changed' 
+      call commit message
       input_file  = dsname.i||'.json'
       do while lines(input_file) \= 0
          sal = linein(input_file)
@@ -157,7 +159,7 @@ pds2git:
          member = list.k
          select
             when table.member.new = 'TABLE.'||member||'.NEW' then do 
-               say 'Deleting 'folder
+               say 'Deleting 'folder||'\'||member 
                'del 'folder||'\'||member||'.*'
                message = 'Delete'
                call commit message
