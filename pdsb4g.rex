@@ -197,7 +197,7 @@ git2pds:
    interpret "'"command" | rxqueue' "stem  
    do queued()
       filename = '' 
-      parse caseless pull sal
+      parse upper pull sal
 
 /* dxr */ say '--> sal 'sal 
 
