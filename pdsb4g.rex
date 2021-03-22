@@ -186,8 +186,8 @@ git2pds:
    dir1 = translate(dir1,'','*')
    dir1 = translate(dir1,'','%')     
    dir2 = translate(dir1,'/','\')
-   dir1 = strip(dir1)  
-   dir2 = strip(dir2)  
+   dir1 = lower(strip(dir1))
+   dir2 = lower(strip(dir2))
 
 /* dxr */ say '--> dir 'dir1 dir2
 
@@ -197,7 +197,7 @@ git2pds:
    interpret "'"command" | rxqueue' "stem  
    do queued()
       filename = '' 
-      parse upper pull sal
+      parse caseless pull sal
 
 /* dxr */ say '--> sal 'sal 
 
@@ -214,7 +214,7 @@ git2pds:
             lp = lastpos('.',dataset_member) 
             dataset_member = translate(dataset_member,'(','.',,lp) || ')'
             /* dxr */ say '--> dataset_member'dataset_member
-            if SysFileExists(filename) = 0 then Do
+            if SysFileExists("'"filename"'") = 0 then Do
                say 'File 'filename 'doesn''t exist'
                /* dxr */ say '--> zowe zos-files delete data-set "'||dataset_member||'" -f'
 

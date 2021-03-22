@@ -1,8 +1,8 @@
 /* rexx */
 
-len = length(dataset)
-dataset = substr(dataset,1,len-4) 
-dataset = translate(dataset,'.','/')     
-dataset = translate(dataset,'.','\')     
-lp = lastpos('.',dataset) 
-dataset = translate(dataset,'(','.',,lp) || ')'     
+filename =  'roddi01/git/rexx/rexx04.txt'
+
+if SysFileExists(filename) = 0 then Do
+   say 'File 'filename 'doesn''t exist'     
+end
+exit
