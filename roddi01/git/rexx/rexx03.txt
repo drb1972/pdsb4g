@@ -1,6 +1,6 @@
 /* rexx                                                               */
 
-/* change 00 */
+/* change 01 */
 say 'goodbye'
 say 'hello'
 
