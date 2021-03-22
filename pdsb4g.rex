@@ -86,8 +86,9 @@ pds2git:
       call rxqueue "Set",stem
       interpret "'"command" | rxqueue' "stem  
 
-      i=0; drop list.; drop table;  member = ''; vers = ''; mod = ''
+      j=0; drop list.; drop table.;  member = ''; vers = ''; mod = ''
 
+      say 'Loading current member versions'
       do queued()
          pull sal
          select
@@ -95,17 +96,18 @@ pds2git:
             when pos('"MEMBER":',sal)<>0 then parse var sal '"MEMBER": "' member '",'
             when pos('"VERS":',sal)<>0   then parse var sal '"VERS":' vers ','
             when pos('"MOD":',sal)<>0    then parse var sal '"MOD":' mod ','
-            otherwise iterate
+            otherwise nop
          end /* select */
          if member <> '' & vers <> '' & mod <> '' then do
             member = strip(member); vers = strip(vers); mod = strip(mod)
-            i=i+1; list.i =member
+            j=j+1; list.j =member
             table.member.new = 'v'||vers ||'m'||mod
             member = ''; vers = ''; mod = ''
          end /* if */
       end /* do queued() */
       call rxqueue "Delete", stem
 
+      say 'Loading previous member versions'
       input_file  = dsname.i||'.json'
       do while lines(input_file) \= 0
          sal = linein(input_file)
@@ -114,31 +116,47 @@ pds2git:
             when pos('"member":',sal)<>0 then parse var sal '"member": "' member '",'
             when pos('"vers":',sal)<>0   then parse var sal '"vers":' vers ','
             when pos('"mod":',sal)<>0    then parse var sal '"mod":' mod ','
-            otherwise iterate
+            otherwise nop
          end /* select */
          if member <> '' & vers <> '' & mod <> '' then do
             member = strip(member); vers = strip(vers); mod = strip(mod)
-            i=i+1; list.i =member
+            j=j+1; list.j =member
             table.member.old = 'v'||vers ||'m'||mod
             member = ''; vers = ''; mod = ''
          end /* if dsname */
       end /* do queued() */
       call lineout input_file
 
-      list.0 = i
-      Call SysStemSort "list."
+      list.0 = j
 
-      do i = 1 to list.0 
-         j=i-1
-         if list.i = list.j then iterate 
-         member = list.i
+/* sort stem buble method */
+      Do k = list.0 To 1 By -1 Until flip_flop = 1
+         flip_flop = 1
+         Do j = 2 To k
+            m = j - 1
+            If list.m > list.j Then Do
+               xchg   = list.m
+               list.m = list.j
+               list.j = xchg
+               flip_flop = 0
+            End /* If stem.m */
+         End /* Do j = 2 */
+      End /* Do i = stem.0 */
+
+
+      do k = 1 to list.0 
+         j=k-1
+         if list.k = list.j then iterate 
+         member = list.k
          select
             when table.member.new = 'TABLE.'||member||'.NEW' then do 
+               say 'Deleting 'folder
                'del 'folder||'\'||member||'.*'
                message = 'Delete'
                call commit
             end
             when table.member.new <> table.member.old then do 
+               say dsname.i||'('||member||') updated from 'table.member.old ' to 'table.member.new
                'zowe zos-files download ds "'||dsname.i||'('||member||')"'
                message = table.member.new 
                call commit
@@ -147,7 +165,7 @@ pds2git:
          end
       end
 
-   end /* do i = 1 to dsname.0 */
+   end /* do k = 1 to dsname.0 */
 
    if commit = 'Y' then 'git push'
 
