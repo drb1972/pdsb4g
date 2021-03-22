@@ -187,7 +187,14 @@ git2pds:
    interpret "'"command" | rxqueue' "stem  
    do queued()
       parse caseless pull sal
-      say '--> 'sal
+      select
+         when pos('Already up to date.',sal)<>0 then say 'Up to Date'
+         otherwise nop
+      end
+
+            
+
+
    end
    call rxqueue "Delete", stem
 
