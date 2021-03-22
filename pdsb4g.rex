@@ -11,7 +11,7 @@ if pds2git = Y then call pds2git
 
 
 
-
+say '['||time()||'] Using rexxfile 'directory()
 
 exit
 
