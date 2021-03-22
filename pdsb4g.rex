@@ -110,37 +110,33 @@ pds2git:
 /* Load current member version                                       */
 
       command = 'zowe zos-files list am "'||dsname.i||'" -a --rfj > 'dsname.i||'.json'
-      stem = rxqueue("Create")
-      call rxqueue "Set",stem
-      interpret "'"command" | rxqueue' "stem 
-
-      say 'Loading current member versions'
-      do queued()
-         pull sal
+      input_file  = dsname.i||'.json'
+      do while lines(input_file) \= 0
+         sal = linein(input_file)
          select
-            when pos('"STDOUT":',sal)<>0 then iterate
-            when pos('"MEMBER":',sal)<>0 then parse var sal '"MEMBER": "' member '",'
-            when pos('"VERS":',sal)<>0   then parse var sal '"VERS":' vers ','
-            when pos('"MOD":',sal)<>0    then parse var sal '"MOD":' mod ','
+            when pos('"stdout":',sal)<>0 then iterate
+            when pos('"member":',sal)<>0 then parse var sal '"member": "' member '",'
+            when pos('"vers":',sal)<>0   then parse var sal '"vers":' vers ','
+            when pos('"mod":',sal)<>0    then parse var sal '"mod":' mod ','
             otherwise nop
          end /* select */
          if member <> '' & vers <> '' & mod <> '' then do
             member = strip(member); vers = strip(vers); mod = strip(mod)
             j=j+1; list.j =member
-            table.member.new = 'v'||vers ||'m'||mod
+            table.member.mew = 'v'||vers ||'m'||mod
             member = ''; vers = ''; mod = ''
-         end /* if */
+         end /* if dsname */
       end /* do queued() */
-      call rxqueue "Delete", stem
+      call lineout input_file
 
       list.0 = j
 
       /* dxr */ do j = 1 to list.0
                   member = list.j
-                  say '---> member 'member 'table.member.new 'table.member.new 'table.member.old 'table.member.new
+                  say '---> member 'member 'table.member.new 'table.member.new 'table.member.old 'table.member.old
                end
 
-               
+
 /* sort stem buble method */
       Do k = list.0 To 1 By -1 Until flip_flop = 1
          flip_flop = 1
