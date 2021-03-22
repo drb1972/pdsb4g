@@ -181,21 +181,52 @@ return
 
 git2pds:
 
+
+   dir = translate(hlq,'\','.')     
+   dir = translate(hlq,'*','')
+   dir = translate(hlq,'%','')     
+   dir = strip(dir)  
+
+/* dxr */ say '--> 'dir
+
    command = 'git pull'
    stem = rxqueue("Create")
    call rxqueue "Set",stem
    interpret "'"command" | rxqueue' "stem  
    do queued()
+      filename = '' 
       parse caseless pull sal
+
+/* dxr */ say '--> sal 'sal 
+
       select
          when pos('Already up to date.',sal)<>0 then say 'Up to Date'
+         when pos('files changed',sal)<>0 | pos('file changed',sal)<>0 then leave
+         when pos(dir,sal)<>0 then do
+            parse var sal filename ' |' . 
+            /* dxr */ say '--> filename 'filename
+            len = length(filename)
+            dataset_member = substr(filename,1,len-4) 
+            dataset_member = translate(dataset_member,'.','/')     
+            dataset_member = translate(dataset_member,'.','\')     
+            lp = lastpos('.',dataset_member) 
+            dataset_member = translate(dataset_member,'(','.',,lp) || ')'
+            /* dxr */ say '--> dataset_member'dataset_member
+            if SysFileExists(filename) = 0 then Do
+               say 'File 'filename 'doesn''t exist'
+               /* dxr */ say '--> zowe zos-files delete data-set "'||dataset_member||'" -f'
+
+               'zowe zos-files delete data-set "'||dataset_member||'" -f'
+            end
+            else do 
+               /* dxr */ say '--> zowe zos-files upload file-to-data-set "'||filename||'" "'||dataset_member||'"'
+               'zowe zos-files upload file-to-data-set "'||filename||'" "'||dataset_member||'"'
+            end /* if SysFileExists */   
+         end
          otherwise nop
       end
-
-            
-
-
-   end
+   end /* do queued() */
+   
    call rxqueue "Delete", stem
 
 return
