@@ -186,7 +186,7 @@ git2pds:
    call rxqueue "Set",stem
    interpret "'"command" | rxqueue' "stem  
    do queued()
-      pull caseless sal
+      parse caseless pull sal
       say '--> 'sal
    end
    call rxqueue "Delete", stem
