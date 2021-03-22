@@ -1,6 +1,8 @@
 /* pdsb4g                                                            */
 /* Sync PDS libraries with github repo                               */
 
+say '['||time()||'] Using rexxfile 'directory()
+
 /* read congig.json file                                             */
 call read_config
 
