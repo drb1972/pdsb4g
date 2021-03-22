@@ -1,0 +1,3 @@
+/* rexx06 */
+say rexx06
+exit
