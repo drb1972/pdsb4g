@@ -1,5 +1,5 @@
 /* rexx                                                               */
-
+say 'goodbye'
 say 'hello'
 
 /* Obtencion de listado de elementos en Baseline                      */
