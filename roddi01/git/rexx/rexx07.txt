@@ -1,3 +1,4 @@
 /* rexx07 */
 say Hi
+say Bye
 exit
