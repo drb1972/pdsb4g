@@ -1,3 +1,0 @@
-/* rexx */
-say 'Hi'
-exit
