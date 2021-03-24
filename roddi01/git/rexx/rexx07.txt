@@ -1,5 +1,5 @@
 /* rexx07 */
 say Hi
-say adios
 say newline
+say byebye
 exit
