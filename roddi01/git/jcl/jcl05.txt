@@ -1,0 +1,10 @@
+//StepName EXEC PGM=IDCAMS
+//SYSPRINT DD   SYSOUT=SYSOUT
+//SYSOUT   DD   *
+//SYSIN    DD   *
+    DEFINE CLUSTER -
+       (NAME (Name) -
+       STORAGECLASS (StorageClass) -
+       MANAGEMENTCLASS (ManagementClass) -
+       DATACLASS (DataClass))
+/*
