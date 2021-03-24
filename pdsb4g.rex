@@ -1,9 +1,12 @@
 /* pdsb4g                                                            */
 /* Sync PDS libraries with github repo                               */
 
+do 100
 say '['||time()||'] Using rexxfile 'directory()
 
 /* read congig.json file                                             */
+
+
 call read_config
 
 if pds2git = Y then call pds2git
@@ -11,7 +14,7 @@ if pds2git = Y then call pds2git
 if git2pds = Y then call git2pds
 
 say '['||time()||'] Using rexxfile 'directory()
-
+end
 exit
 
 /* read congig.json file                                             */
@@ -71,7 +74,14 @@ pds2git:
       if exists = 0 then do 
 /* New PDS or first time                                             */   
          say 'Folder doesn''t exist'
-         'zowe zos-files download am "'||dsname.i||'" --mcr 10'
+
+         select 
+            when pos('.rex',dsname.i)>0 then ext = '-e rex'
+            when pos('.jcl',dsname.i)>0 then ext = '-e jcl'
+            otherwise ext = ''
+         end
+
+         'zowe zos-files download am "'||dsname.i||'" 'ext' --mcr 10'
          say 'Creating 'dsname.i'.json file'
          'zowe zos-files list am "'||dsname.i||'" -a --rfj > 'dsname.i||'.json'
          message = 'first-commit'
