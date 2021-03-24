@@ -175,7 +175,13 @@ pds2git:
             end
             when table.member.new <> table.member.old then do 
                say dsname.i||'('||member||') updated from 'table.member.old ' to 'table.member.new
-               'zowe zos-files download ds "'||dsname.i||'('||member||')"'
+               select 
+                  when pos('.rex',dsname.i)>0 then ext = '-e rex'
+                  when pos('.jcl',dsname.i)>0 then ext = '-e jcl'
+                  otherwise ext = ''
+               end
+
+               'zowe zos-files download ds "'||dsname.i||'('||member||')" 'ext
                message = table.member.new 
                call commit message
             end
