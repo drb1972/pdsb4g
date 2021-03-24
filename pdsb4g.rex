@@ -19,6 +19,9 @@ exit
 
 /* read congig.json file                                             */
 read_config:
+   say '==================================='
+   say ' Reading configuration'
+   say '==================================='
    input_file  = 'config.json'
    do while lines(input_file) \= 0
       line = caseless linein(input_file)
@@ -36,7 +39,9 @@ return
 
 /* pds2git - Syncs PDS files with GitHub                             */
 pds2git:
-
+   say '==================================='
+   say ' Mainframe ---> GitHub'
+   say '==================================='
 /* retrieve hlq PDS names and load dsname. stem                      */
    command = 'zowe zos-files list ds "'hlq'" -a --rfj'   
    stem = rxqueue("Create")
@@ -196,6 +201,9 @@ pds2git:
 return
 
 git2pds:
+   say '==================================='
+   say ' GitHub --> Mainframe'
+   say '==================================='
 
    dir1 = translate(hlq,'\','.')     
    dir1 = translate(dir1,'','*')
