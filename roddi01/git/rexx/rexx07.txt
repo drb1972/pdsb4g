@@ -1,5 +1,0 @@
-/* rexx07 */
-say Hi
-say newline
-say byebye
-exit
