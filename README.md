@@ -3,8 +3,8 @@ PDS Bridge for GIT
 
 Enhancement:
 - Crear git repo automático en C/:Temp - done
-- Check folder C:\Temp
-- Check if the repo folder exists
+- Check folder C:\Temp - done
+- Check if the repo folder exists - done
 
 PDS2GIT: 
 - Delete a dataset: delete from local-Git when the # of rows = 0

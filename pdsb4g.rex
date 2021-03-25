@@ -22,6 +22,7 @@ read_config:
    say '==================================='
    say ' Reading configuration'
    say '==================================='
+   hlq.0 = 0
    input_file  = 'config.json'
    do while lines(input_file) \= 0
       line = caseless linein(input_file)
@@ -33,6 +34,7 @@ read_config:
       else command = head "="tail
       
       interpret command 
+      if substr(head,1,3) = 'hlq' then hlq.0 = hlq.0 + 1
    end /* do while */
    call lineout input_file
 return
@@ -43,20 +45,21 @@ pds2git:
    say ' Mainframe ---> GitHub'
    say '==================================='
 /* retrieve hlq PDS names and load dsname. stem                      */
-   command = 'zowe zos-files list ds "'hlq'" -a --rfj'   
-   stem = rxqueue("Create")
-   call rxqueue "Set",stem
-   interpret "'"command" | rxqueue' "stem  
+   if SysFileExists('hlq.json') = 1 then "del hlq.json"
+   do i = 1 to hlq.0 
+      'zowe zos-files list ds "'hlq.i'" -a --rfj >> hlq.json'   
+   end
 
    drop dsname.; drop folder.; i = 0; dsname = ''; dsorg = ''; sal = ''
    
-   do queued()
-      pull sal
+   input_file  = 'hlq.json'
+   do while lines(input_file) \= 0
+      sal = linein(input_file)
       select
-         when pos('"STDOUT":',sal)<>0 then iterate
-         when pos('"DSNAME":',sal)<>0 then parse var sal '"DSNAME":' dsname ','
-         when pos('"DSORG":',sal)<>0  then parse var sal '"DSORG":' dsorg ','
-         when pos('"LRECL":',sal)<>0  then parse var sal '"LRECL":' lrecl ','
+         when pos('"stdout":',sal)<>0 then iterate
+         when pos('"dsname":',sal)<>0 then parse var sal '"dsname":' dsname ','
+         when pos('"dsorg":',sal)<>0  then parse var sal '"dsorg":' dsorg ','
+         when pos('"lrecl":',sal)<>0  then parse var sal '"lrecl":' lrecl ','
          otherwise nop
       end /* select */
       if dsname <> '' & substr(dsorg,3,2) = 'PO' & substr(lrecl,3,2) = '80' then do 
@@ -66,8 +69,11 @@ pds2git:
          dsname = ''; dsorg  = ''; lrecl = ''
       end /* if dsname */
    end /* do queued() */
+   call lineout input_file
    dsname.0 = i
-   call rxqueue "Delete", stem
+   /* dxr*/ do i = 1 to dsname.0
+   say dsname.i
+   end
 
 /* for each PDS                                                      */
 

@@ -10,15 +10,16 @@ parse var ghrepo . '//' . '/' . '/' folder_name '.git'
 if SysIsFileDirectory(folder_name) = 0 then do
    -- "rmdir /S /Q "folder_name
    "git clone "ghrepo
-   "cd "folder_name
-   "copy "currdir||"\pdsb4g.rex"
-   "copy "currdir||"\config.json"
-   "echo pdsb4g.rex >> .gitignore"
-   "echo *.json >> .gitignore"
-   "echo *.txt >> .gitignore"
-   "echo *.md >> .gitignore"
 end
 "cd "folder_name
+"copy "currdir||"\pdsb4g.rex"
+"copy "currdir||"\config.json"
+"echo pdsb4g.rex >> .gitignore"
+"echo *.json >> .gitignore"
+"echo *.txt >> .gitignore"
+"echo *.md >> .gitignore"
+"git pull"
+
 "rexx pdsb4g.rex"
 exit
 
