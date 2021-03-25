@@ -153,12 +153,6 @@ pds2git:
 
       list.0 = j
 
-      -- /* dxr */ do j = 1 to list.0
-      --             member = list.j
-      --             say '---> member 'member 'table.member.new 'table.member.new 'table.member.old 'table.member.old
-      --          end
-
-
 /* sort stem buble method */
       Do k = list.0 To 1 By -1 Until flip_flop = 1
          flip_flop = 1

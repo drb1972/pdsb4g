@@ -16,7 +16,6 @@ end
 "copy "currdir||"\config.json"
 "echo pdsb4g.rex > .gitignore"
 "echo *.json >> .gitignore"
-"echo *.md >> .gitignore"
 'git commit -a -m "first-commit"'
 
 "rexx pdsb4g.rex"
