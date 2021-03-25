@@ -1,5 +1,6 @@
 {
-   "hlq.1"     : "RODDI01.GIT*",
+   "hlq.1"   : "RODDI01.GIT*",
+   "hlq.2"   : "SYS1.PARMLI*",
    "ghrepo"  : "https://github.com/drb1972/Demo.git",
    "pds2git" : "Y",
    "git2pds" : "Y"
