@@ -14,11 +14,10 @@ end
 "cd "folder_name
 "copy "currdir||"\pdsb4g.rex"
 "copy "currdir||"\config.json"
-"echo pdsb4g.rex >> .gitignore"
+"echo pdsb4g.rex > .gitignore"
 "echo *.json >> .gitignore"
-"echo *.txt >> .gitignore"
 "echo *.md >> .gitignore"
-"git pull"
+'git commit -a -m "first-commit"'
 
 "rexx pdsb4g.rex"
 exit
