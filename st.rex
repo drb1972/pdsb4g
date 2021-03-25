@@ -1,21 +1,23 @@
 /* rexx */
 
 call read_config
+if SysIsFileDirectory('C:\Temp') = 0 then "md C:\Temp"
 
 "cd C:\Temp"
 
 parse var ghrepo . '//' . '/' . '/' folder_name '.git'
 
-"rmdir /S /Q "folder_name
-"git clone "ghrepo
-"cd "folder_name
-"copy "currdir||"\pdsb4g.rex"
-"copy "currdir||"\config.json"
-"echo pdsb4g.rex >> .gitignore"
-"echo *.json >> .gitignore"
-"echo *.txt >> .gitignore"
-"echo *.md >> .gitignore"
-
+if SysIsFileDirectory(folder_name) = 0 then do
+   "rmdir /S /Q "folder_name
+   "git clone "ghrepo
+   "cd "folder_name
+   "copy "currdir||"\pdsb4g.rex"
+   "copy "currdir||"\config.json"
+   "echo pdsb4g.rex >> .gitignore"
+   "echo *.json >> .gitignore"
+   "echo *.txt >> .gitignore"
+   "echo *.md >> .gitignore"
+end
 "rexx pdsb4g.rex"
 exit
 
