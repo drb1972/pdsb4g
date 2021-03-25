@@ -1,5 +1,6 @@
 {
    "hlq"     : "RODDI01.GIT*",
+   "ghrepo"  : "https://github.com/drb1972/delete.git",
    "pds2git" : "Y",
    "git2pds" : "Y"
 }
