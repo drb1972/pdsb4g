@@ -91,11 +91,12 @@ pds2git:
          'zowe zos-files list am "'||dsname.i||'" -a --rfj > 'dsname.i||'.json'
          message = 'first-commit'
          call commit message 
+         "git push"
          iterate
       end
 
 /* Update                                                            */
-
+/* dxr */ say 'por aqui'
       j=0; drop list.; drop table.;  member = ''; vers = ''; mod = ''
 
 /* Load old member version                                           */

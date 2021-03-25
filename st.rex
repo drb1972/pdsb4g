@@ -8,7 +8,7 @@ if SysIsFileDirectory('C:\Temp') = 0 then "md C:\Temp"
 parse var ghrepo . '//' . '/' . '/' folder_name '.git'
 
 if SysIsFileDirectory(folder_name) = 0 then do
-   "rmdir /S /Q "folder_name
+   -- "rmdir /S /Q "folder_name
    "git clone "ghrepo
    "cd "folder_name
    "copy "currdir||"\pdsb4g.rex"
@@ -18,6 +18,7 @@ if SysIsFileDirectory(folder_name) = 0 then do
    "echo *.txt >> .gitignore"
    "echo *.md >> .gitignore"
 end
+"cd "folder_name
 "rexx pdsb4g.rex"
 exit
 
