@@ -96,7 +96,7 @@ pds2git:
       end
 
 /* Update                                                            */
-/* dxr */ say 'por aqui'
+
       j=0; drop list.; drop table.;  member = ''; vers = ''; mod = ''
 
 /* Load old member version                                           */
