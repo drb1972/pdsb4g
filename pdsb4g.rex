@@ -4,7 +4,7 @@
 do forever
    say '['||time()||'] Using rexxfile 'directory()
 
-   /* read congig.json file                                             */
+   /* read congig.json file                                          */
    call read_config
    call SysSleep(cycle)
    if pds2git = Y then call pds2git
