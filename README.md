@@ -24,7 +24,7 @@ Instructions
    - 3.3. To have bidirectional synch leave pds2git and git2pds values set to "Y"
    - 3.4. Set the cycle time in seconds at "cycle". Value of 1 will synch continously 
    - 3.5. Set the zowe zOSMF profile you want to use at "zosmf_p"
-4.- Run st.rex 
+- 4.- Run st.rex 
 
 pdsb4g is set to synchronize only PDS or PDS-E files with LRECL 80, but can be set to synch any dataset on the mainframe. It is meant to version home made ISPF applications that are not included in standard Mainframe SCMs. Also for JCL, Rexx, parm, ISPF panel, ISPF messages, ISPF skeleton libraries. 
 
