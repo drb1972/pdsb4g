@@ -86,6 +86,7 @@ pds2git:
          select 
             when pos('.rex',dsname.i)>0 then ext = '-e rex'
             when pos('.jcl',dsname.i)>0 then ext = '-e jcl'
+            when pos('.COBOL',dsname.i)>0 then ext = '-e cbl'
             otherwise ext = ''
          end
 
@@ -181,6 +182,7 @@ pds2git:
                select 
                   when pos('.rex',dsname.i)>0 then ext = '-e rex'
                   when pos('.jcl',dsname.i)>0 then ext = '-e jcl'
+                  when pos('.COBOL',dsname.i)>0 then ext = '-e cbl'
                   otherwise ext = ''
                end
 
