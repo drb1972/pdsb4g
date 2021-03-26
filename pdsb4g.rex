@@ -1,19 +1,16 @@
 /* pdsb4g                                                            */
 /* Sync PDS libraries with github repo                               */
 
-do 100
-say '['||time()||'] Using rexxfile 'directory()
+do forever
+   say '['||time()||'] Using rexxfile 'directory()
 
-/* read congig.json file                                             */
+   /* read congig.json file                                             */
+   call read_config
+   call SysSleep(cycle)
+   if pds2git = Y then call pds2git
+   if git2pds = Y then call git2pds
 
-
-call read_config
-
-if pds2git = Y then call pds2git
-
-if git2pds = Y then call git2pds
-
-say '['||time()||'] Using rexxfile 'directory()
+   say '['||time()||'] Using rexxfile 'directory()
 end
 exit
 
