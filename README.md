@@ -20,7 +20,7 @@ Instructions
       - "hlq.1"   : "CUST001.M*",
       - "hlq.2"   : "SYS1.PARMLI*",
       -  ... numbers must be in sequential order
-   - 3.2. set your GitHub repo name in "ghrepo"  
+   - 3.2. Set your GitHub repo name in "ghrepo"  
    - 3.3. To have bidirectional synch leave pds2git and git2pds values set to "Y"
    - 3.4. Set the cycle time in seconds at "cycle". Value of 1 will synch ontinously 
    - 3.5. Set the zowe zOSMF profile you want to use at "zosmf_p"
