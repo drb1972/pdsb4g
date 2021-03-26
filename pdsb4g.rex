@@ -44,7 +44,7 @@ pds2git:
 /* retrieve hlq PDS names and load dsname. stem                      */
    if SysFileExists('hlq.json') = 1 then "del hlq.json"
    do i = 1 to hlq.0 
-      'zowe zos-files list ds "'hlq.i'" -a --rfj >> hlq.json'   
+      'zowe zos-files list ds "'hlq.i'" -a --rfj --zosmf-p 'zosmf_p' >> hlq.json'   
    end
 
    drop dsname.; drop folder.; i = 0; dsname = ''; dsorg = ''; sal = ''
@@ -89,9 +89,9 @@ pds2git:
             otherwise ext = ''
          end
 
-         'zowe zos-files download am "'||dsname.i||'" 'ext' --mcr 10'
+         'zowe zos-files download am "'||dsname.i||'" 'ext' --zosmf-p 'zosmf_p' --mcr 10 '
          say 'Creating 'dsname.i'.json file'
-         'zowe zos-files list am "'||dsname.i||'" -a --rfj > 'dsname.i||'.json'
+         'zowe zos-files list am "'||dsname.i||'" -a --rfj --zosmf-p 'zosmf_p' > 'dsname.i||'.json'
          message = 'first-commit'
          call commit message 
          "git push"
@@ -126,7 +126,7 @@ pds2git:
 
 /* Load current member version                                       */
       say 'Loading current member versions'
-      'zowe zos-files list am "'||dsname.i||'" -a --rfj > 'dsname.i||'.json'
+      'zowe zos-files list am "'||dsname.i||'" -a --rfj --zosmf-p 'zosmf_p'> 'dsname.i||'.json'
       message = 'members-changed' 
       call commit message
       input_file  = dsname.i||'.json'
@@ -184,7 +184,7 @@ pds2git:
                   otherwise ext = ''
                end
 
-               'zowe zos-files download ds "'||dsname.i||'('||member||')" 'ext
+               'zowe zos-files download ds "'||dsname.i||'('||member||')" 'ext '--zosmf-p 'zosmf_p
                message = table.member.new 
                call commit message
             end
@@ -235,10 +235,10 @@ git2pds:
             i=i+1; dataset.i = substr(dataset_member,1,lp-1) 
             if SysFileExists(filename) = 0 then Do
                say 'File 'filename 'doesn''t exist'
-               'zowe zos-files delete data-set "'||dataset_member||'" -f'
+               'zowe zos-files delete data-set "'||dataset_member||'" --zosmf-p 'zosmf_p' -f '
             end
             else do 
-               'zowe zos-files upload file-to-data-set "'||filename||'" "'||dataset_member||'"'
+               'zowe zos-files upload file-to-data-set "'||filename||'" "'||dataset_member||'" --zosmf-p 'zosmf_p
             end /* if SysFileExists */   
          end
          otherwise nop
@@ -251,7 +251,7 @@ git2pds:
       say dataset.i 
       j = i-1
       if dataset.i = dataset.j then iterate
-      'zowe zos-files list am "'||dataset.i||'" -a --rfj > 'dataset.i||'.json'
+      'zowe zos-files list am "'||dataset.i||'" -a --rfj --zosmf-p 'zosmf_p' > 'dataset.i||'.json'
    end
 return
 
