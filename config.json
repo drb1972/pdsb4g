@@ -4,5 +4,6 @@
    "ghrepo"  : "https://github.com/drb1972/Demo.git",
    "pds2git" : "Y",
    "git2pds" : "Y",
-   "cycle"   : "1" 
+   "cycle"   : "1",
+   "zosmf_p" : "zosmf-sr01brs"
 }
