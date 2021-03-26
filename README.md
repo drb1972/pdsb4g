@@ -32,7 +32,9 @@ pdsb4g is set to synchronize only PDS or PDS-E files with LRECL 80, but can be s
 
 The first time the service is executed takes a while until synchronizes PDSs with GitHub depending of the number of PDS and Members. Following times is very fast by updating any change. 
 
-If you just want to se how it works or demo, choose a small amount of PDS and set the cycle to 1 second. Once you start the process in cmd line: "rexx st.rex"
+If you just want to se how it works or demo, choose a small amount of PDS and set the cycle to 1 second. 
+
+Once you start the process in cmd line: "rexx st.rex"
 
 - Test1: 
    - Edit a member in 3270 (I don't recomend zowe explorer because it works with cached data and doesn't reflect the updates), delete a couple of lines and add another. 
