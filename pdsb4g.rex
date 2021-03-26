@@ -250,10 +250,12 @@ git2pds:
             otherwise nop
          end
       end /* do queued() */
+      
+      call rxqueue "Delete", stem
+      
    end /* do  k = 1 to hlq.0 */
 
 
-   call rxqueue "Delete", stem
    dataset.0 = i
    do i = 1 to dataset.0
       say dataset.i 
