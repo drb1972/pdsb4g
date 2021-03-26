@@ -49,8 +49,10 @@ Once you start the process in cmd line: "rexx st.rex"
    - "git clone <your_github_repo>"
    - Position your prompt in the cloned folder
    - Modify, delete and create new files
-   - Update the GitHub repo with your preferred method (GH Desktop, VSCode extenskion, command line, ...)
+   - Update the GitHub repo with your preferred method (GH Desktop, VSCode extension, command line, ...)
       - git add .
       - git commit -m "<any-message>"
       - git push
    - With this method, you will have one commit for all changes you made, so this is better if you want to group changes in a single commit
+
+   Any comment is welcome: diego.rodriguez@broadcom.com , and don't forget to plant the tree
