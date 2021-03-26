@@ -205,48 +205,54 @@ git2pds:
    say ' GitHub --> Mainframe'
    say '==================================='
 
-   dir1 = translate(hlq,'\','.')     
-   dir1 = translate(dir1,'','*')
-   dir1 = translate(dir1,'','%')     
-   dir2 = translate(dir1,'/','\')
-   dir1 = lower(strip(dir1))
-   dir2 = lower(strip(dir2))
+   do k = 1 to hlq.0 
 
-   drop dataset.; i=0
+      hlq = hlq.k
 
-   command = 'git pull'
-   stem = rxqueue("Create")
-   call rxqueue "Set",stem
-   interpret "'"command" | rxqueue' "stem  
-   do queued()
-      filename = '' 
-      parse caseless pull sal
-      select
-         when pos('Already up to date.',sal)<>0 then say 'Up to Date'
-         when pos('files changed',sal)<>0 | pos('file changed',sal)<>0 then leave
-         when pos(dir1,sal)<>0 | pos(dir2,sal)<>0 then do
-            parse var sal filename ' |' . 
-            filename = strip(filename)
-            len = length(filename)
-            dataset_member = substr(filename,1,len-4) 
-            dataset_member = translate(dataset_member,'.','/')     
-            dataset_member = translate(dataset_member,'.','\')     
-            lp = lastpos('.',dataset_member) 
-            dataset_member = translate(dataset_member,'(','.',,lp) || ')'
-            lp = pos('(',dataset_member)  
-            i=i+1; dataset.i = substr(dataset_member,1,lp-1) 
-            if SysFileExists(filename) = 0 then Do
-               say 'File 'filename 'doesn''t exist'
-               'zowe zos-files delete data-set "'||dataset_member||'" --zosmf-p 'zosmf_p' -f '
+      dir1 = translate(hlq,'\','.')     
+      dir1 = translate(dir1,'','*')
+      dir1 = translate(dir1,'','%')     
+      dir2 = translate(dir1,'/','\')
+      dir1 = lower(strip(dir1))
+      dir2 = lower(strip(dir2))
+
+      drop dataset.; i=0
+
+      command = 'git pull'
+      stem = rxqueue("Create")
+      call rxqueue "Set",stem
+      interpret "'"command" | rxqueue' "stem  
+      do queued()
+         filename = '' 
+         parse caseless pull sal
+         select
+            when pos('Already up to date.',sal)<>0 then say 'Up to Date'
+            when pos('files changed',sal)<>0 | pos('file changed',sal)<>0 then leave
+            when pos(dir1,sal)<>0 | pos(dir2,sal)<>0 then do
+               parse var sal filename ' |' . 
+               filename = strip(filename)
+               len = length(filename)
+               dataset_member = substr(filename,1,len-4) 
+               dataset_member = translate(dataset_member,'.','/')     
+               dataset_member = translate(dataset_member,'.','\')     
+               lp = lastpos('.',dataset_member) 
+               dataset_member = translate(dataset_member,'(','.',,lp) || ')'
+               lp = pos('(',dataset_member)  
+               i=i+1; dataset.i = substr(dataset_member,1,lp-1) 
+               if SysFileExists(filename) = 0 then Do
+                  say 'File 'filename 'doesn''t exist'
+                  'zowe zos-files delete data-set "'||dataset_member||'" --zosmf-p 'zosmf_p' -f '
+               end
+               else do 
+                  'zowe zos-files upload file-to-data-set "'||filename||'" "'||dataset_member||'" --zosmf-p 'zosmf_p
+               end /* if SysFileExists */   
             end
-            else do 
-               'zowe zos-files upload file-to-data-set "'||filename||'" "'||dataset_member||'" --zosmf-p 'zosmf_p
-            end /* if SysFileExists */   
+            otherwise nop
          end
-         otherwise nop
-      end
-   end /* do queued() */
-   
+      end /* do queued() */
+   end /* do  k = 1 to hlq.0 */
+
+
    call rxqueue "Delete", stem
    dataset.0 = i
    do i = 1 to dataset.0
