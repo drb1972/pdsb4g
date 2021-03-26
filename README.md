@@ -40,7 +40,7 @@ Once you start the process in cmd line: "rexx st.rex"
    - Edit a member in 3270 (I don't recommend zowe explorer because it works with cached data and doesn't reflect the updates sometimes), delete a couple of lines and add another. 
    - Delete another member
    - Create a new member
-   - Wait a minute before you go to GitHub and see the changes. Edit the member you modified and click on history icon or in the commit code to see the changes.
+   - Wait a minute before you go to GitHub and see the changes. Edit the member in GitHub that you modified and click on history icon or in the commit code to see the changes.
    - Repeat various times by changing the same member. You'll see the modification history.
 
 - Test2: 
