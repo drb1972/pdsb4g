@@ -5,6 +5,8 @@ Utility to synchronize zOS Particioned DataSets (PDS) with a GitHub repo automat
 
 Requirements:
 - Windows 
+- zowe
+- zOSMF REST APIs installed on the Mainframe 
 - ooRexx
 - local git global configured:
    - git config --global user.name myusername
