@@ -1,7 +1,7 @@
 # pdsb4g
 PDS Bridge for GIT
 
-Utility to synchronize zOS PArticionaet DataSets (PDS) with a GitHub repo automatically and bi-directional
+Utility to synchronize zOS Particioned DataSets (PDS) with a GitHub repo automatically and bi-directional
 
 Requirements:
 - Windows 
