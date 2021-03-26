@@ -2,7 +2,7 @@
 /* Sync PDS libraries with github repo                               */
 
 do forever
-   say '['||time()||'] Using rexxfile 'directory()
+   say '['||time()||'] Using pdsb4g 'directory()
 
    /* read congig.json file                                          */
    call read_config
@@ -10,7 +10,7 @@ do forever
    if pds2git = Y then call pds2git
    if git2pds = Y then call git2pds
 
-   say '['||time()||'] Using rexxfile 'directory()
+   say '['||time()||'] Using pdsb4g 'directory()
 end
 exit
 
