@@ -48,7 +48,7 @@ Once you start the process in cmd line: "rexx st.rex"
    - Open your projects folder and open a terminal
    - "git clone <your_github_repo>"
    - Position your prompt in the cloned folder
-   - Modify, delete or create new files
+   - Modify, delete and create new files
    - Update the GitHub repo with your preferred method (GH Desktop, VSCode extenskion, command line, ...)
       - git add .
       - git commit -m "<any-message>"
