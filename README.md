@@ -20,7 +20,7 @@ Instructions
 - 3. Edit config.json
    - 3.1. Set the HLQs in the format:
       - "hlq.1"   : "CUST001.M*",
-      - "hlq.2"   : "SYS1.PARMLI*",
+      - "hlq.2"   : "CUST002.M*",
       -  ... numbers must be in sequential order
    - 3.2. Set your GitHub repo name in "ghrepo"  
    - 3.3. To have bidirectional synch leave pds2git and git2pds values set to "Y"
@@ -54,5 +54,19 @@ Once you start the process in cmd line: "rexx st.rex"
       - git commit -m "<any-message>"
       - git push
    - With this method, you will have one commit for all changes you made, so this is better if you want to group changes in a single commit
+
+- Test3:
+   - Create a PDS with the same HLQ than the one being synch and feed it with some members
+   - Check it exists in GitHub after waiting a few seconds to complete the cycle
+
+- Test4: 
+   - Delete the PDS you just created 
+   - Check it has disspeared from GitHub after waiting some seconds to complete the cycle
+
+- Test5:
+   - Add a new hlq in config.json file: "hlq.3"   : "CUST003.M*",
+
+- Test5:
+   - Delete an hlq in config.json file
 
    Any comment is welcome: diego.rodriguez@broadcom.com , and don't forget to plant the tree

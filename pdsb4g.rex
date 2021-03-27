@@ -1,8 +1,12 @@
 /* pdsb4g                                                            */
 /* Sync PDS libraries with github repo                               */
+parse arg currdir folder_name
+
 
 do forever
    say '['||time()||'] Using pdsb4g 'directory()
+
+   "copy "currdir||"\config.json" "C:\Temp\" || folder_name
 
    /* read congig.json file                                          */
    call read_config
@@ -10,7 +14,6 @@ do forever
    if pds2git = Y then call pds2git
    if git2pds = Y then call git2pds
 
-   say '['||time()||'] Using pdsb4g 'directory()
 end
 exit
 
@@ -34,17 +37,20 @@ read_config:
       if substr(head,1,3) = 'hlq' then hlq.0 = hlq.0 + 1
    end /* do while */
    call lineout input_file
+
 return
+
 
 /* pds2git - Syncs PDS files with GitHub                             */
 pds2git:
    say '==================================='
    say ' Mainframe ---> GitHub'
    say '==================================='
+
 /* retrieve hlq PDS names and load dsname. stem                      */
    if SysFileExists('hlq.json') = 1 then "del hlq.json"
    do i = 1 to hlq.0 
-      'zowe zos-files list ds "'hlq.i'" -a --rfj --zosmf-p 'zosmf_p' >> hlq.json'   
+      'zowe zos-files list ds "'hlq.i'" -a --rfj --zosmf-p 'zosmf_p' >> hlq.json' 
    end
 
    drop dsname.; drop folder.; i = 0; dsname = ''; dsorg = ''; sal = ''
@@ -77,6 +83,8 @@ pds2git:
    do i = 1 to dsname.0
       folder.i = translate(dsname.i,'\','.')     
       say dsname.i '--> ' folder.i
+      x = value(dsname.i,'ok')
+      
       command = "exists = SysIsFileDirectory('"folder.i"')"
       interpret command
       if exists = 0 then do 
@@ -98,6 +106,10 @@ pds2git:
          "git push"
          iterate
       end
+
+      command = "exists = SysFileExists('"dsname.i || ".json')"
+      interpret command
+      if exists = 0 then 'zowe zos-files list am "'||dsname.i||'" -a --rfj --zosmf-p 'zosmf_p' > 'dsname.i||'.json'
 
 /* Update                                                            */
 
@@ -172,7 +184,7 @@ pds2git:
          member = list.k
          select
             when table.member.new = 'TABLE.'||member||'.NEW' then do 
-               say 'Deleting 'folder.i||'\'||member 
+               say ' Deleting 'folder.i||'\'||member 
                'del 'folder.i||'\'||member||'.*'
                message = 'Delete'
                call commit message
@@ -195,6 +207,30 @@ pds2git:
       end
 
    end /* do k = 1 to dsname.0 */
+
+/* cleanup delete PDS                                      */
+   stem = rxqueue("Create")
+   call rxqueue "Set",stem
+   "dir *.json /B | rxqueue "stem 
+   do queued()
+      parse caseless pull sal
+      parse var sal json_file '.json'
+      select 
+         when json_file = 'config' then nop
+         when json_file = 'hlq' then nop 
+         when value(json_file) = 'ok' then x = value(json_file,'ko')
+         otherwise do 
+            say ' Deleting 'json_file 
+            "del "json_file || '.json'
+            del_dir = translate(json_file,'\','.') 
+            "rmdir /S /Q "del_dir  
+            message = 'no more synch'
+            call commit message
+         end
+      end
+   end
+   call rxqueue "Delete", stem
+
 
    if commit = 'Y' then 'git push'
 

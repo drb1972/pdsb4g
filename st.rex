@@ -18,7 +18,7 @@ end
 "echo *.json >> .gitignore"
 'git commit -a -m "first-commit"'
 
-"rexx pdsb4g.rex"
+"rexx pdsb4g.rex" currdir folder_name
 exit
 
 /* read congig.json file                                             */
