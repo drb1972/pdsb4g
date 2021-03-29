@@ -66,7 +66,7 @@ Once you start the process in cmd line: "rexx st.rex"
 - Test5:
    - Add a new hlq in config.json file: "hlq.3"   : "CUST003.M*",
 
-- Test5:
+- Test6:
    - Delete an hlq in config.json file
 
    Any comment is welcome: diego.rodriguez@broadcom.com , and don't forget to plant the tree

@@ -1,5 +1,7 @@
 {
-   "hlq.1"   : "RODDI01.GIT.R*",
+   "hlq.1"   : "RODDI01.GIT.*",
+   "hlq.2"   : "RODDI01.LIB.JCL",
+   "hlq.3"   : "RODDI01.LIB.COPY",   
    "ghrepo"  : "https://github.com/drb1972/demo.git",
    "pds2git" : "Y",
    "git2pds" : "Y",
