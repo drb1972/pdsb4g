@@ -277,7 +277,8 @@ git2pds:
                i=i+1; dataset.i = substr(dataset_member,1,lp-1) 
                if SysFileExists(filename) = 0 then Do
                   say 'File 'filename 'doesn''t exist'
-                  'zowe zos-files delete data-set "'||dataset_member||'" --zosmf-p 'zosmf_p' -f '
+                  /* Not deleting anything in the Mainframe */
+                  /* dxr */ say 'zowe zos-files delete data-set "'||dataset_member||'" --zosmf-p 'zosmf_p' -f '
                end
                else do 
                   'zowe zos-files upload file-to-data-set "'||filename||'" "'||dataset_member||'" --zosmf-p 'zosmf_p
