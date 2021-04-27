@@ -232,8 +232,9 @@ pds2git:
    call rxqueue "Delete", stem
 
 
-   if commit = 'Y' then 'git push'
-
+   if commit = 'Y' then do
+      'git push'
+   end
 return
 
 git2pds:
